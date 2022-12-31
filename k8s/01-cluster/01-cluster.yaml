@@ -1,0 +1,91 @@
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: gpu-cluster
+  region: ap-northeast-1
+
+availabilityZones: ["ap-northeast-1a","ap-northeast-1c","ap-northeast-1d"]  ## EKS minimum requirement to have more than one AZ.
+
+nodeGroups:
+  - name: spot-ng # normal  spot instances for autoscaler and other k8s components to deploy
+    ami: auto
+    instanceType: mixed
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 4
+    volumeSize: 40
+    volumeType: gp3
+    volumeEncrypted: true
+    overrideBootstrapCommand: |
+      #!/bin/bash
+      /etc/eks/bootstrap.sh gpu-cluster
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      withAddonPolicies:
+        autoScaler: true
+        ebs: true
+        awsLoadBalancerController: true
+        cloudWatch: true
+    instancesDistribution:
+      onDemandPercentageAboveBaseCapacity: 0
+      instanceTypes:
+        - t3.large
+        - t2.large
+        - t3.xlarge
+      spotInstancePools: 15
+    tags:
+      k8s.io/cluster-autoscaler/enabled: 'true'
+    labels:
+      lifecycle: Ec2Spot
+    privateNetworking: true
+    availabilityZones: ["ap-northeast-1a","ap-northeast-1c","ap-northeast-1d"]
+
+  - name: gpu-spot-ng-a   # Will use SPOT instances to reduce the cost of the expensive GPU nodes.
+    ami: auto   # This automatically select the GPU optimzed & Accelerated AMI for the nodes that have NVIDIA Container Toolkit (nvidia-docker2) and other required binarys since the node pools are of GPU node types
+    overrideBootstrapCommand: |
+      #!/bin/bash
+      /etc/eks/bootstrap.sh gpu-cluster
+    instanceType: mixed
+    desiredCapacity: 0    # Since autoscaler is enabled, will start with 0 desired capacity, so until the deployments are scheduled, the nodes wont start until there is deployment with the GPU request.
+    minSize: 0
+    maxSize: 10
+    volumeSize: 100
+    volumeType: gp3
+    volumeEncrypted: true
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      withAddonPolicies:
+        autoScaler: true
+        ebs: true
+        fsx: true
+        efs: true
+        awsLoadBalancerController: true
+        cloudWatch: true
+    instancesDistribution:
+      onDemandPercentageAboveBaseCapacity: 0
+      instanceTypes:
+        - p3.2xlarge
+        - p2.xlarge
+      spotInstancePools: 2
+    tags:
+      k8s.io/cluster-autoscaler/node-template/taint/dedicated: nvidia.com/gpu=true
+      k8s.io/cluster-autoscaler/node-template/label/nvidia.com/gpu: 'true'
+      k8s.io/cluster-autoscaler/enabled: 'true'
+    labels:
+      lifecycle: Ec2Spot
+      nvidia.com/gpu: 'true'
+      k8s.amazonaws.com/accelerator: nvidia-tesla
+    taints:
+      nvidia.com/gpu: "true:NoSchedule"
+    privateNetworking: true
+    availabilityZones: ["ap-northeast-1a"]

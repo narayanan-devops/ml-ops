@@ -1,0 +1,64 @@
+narayanan-sugumar@Narayanan-MacBook-Pro:~|⇒  eksctl create cluster -f cluster.yaml
+2022-12-31 22:28:55 [ℹ]  eksctl version 0.124.0
+2022-12-31 22:28:55 [ℹ]  using region ap-northeast-1
+2022-12-31 22:28:56 [ℹ]  subnets for ap-northeast-1a - public:192.168.0.0/19 private:192.168.96.0/19
+2022-12-31 22:28:56 [ℹ]  subnets for ap-northeast-1c - public:192.168.32.0/19 private:192.168.128.0/19
+2022-12-31 22:28:56 [ℹ]  subnets for ap-northeast-1d - public:192.168.64.0/19 private:192.168.160.0/19
+
+2022-12-31 22:28:56 [ℹ]  nodegroup "spot-ng" will use "ami-09e012432e1388a42" [AmazonLinux2/1.23]
+2022-12-31 22:28:56 [ℹ]  nodegroup "gpu-spot-ng-a" will use "ami-019f2d152c86b28a0" [AmazonLinux2/1.23]
+2022-12-31 22:28:56 [ℹ]  using Kubernetes version 1.23
+2022-12-31 22:28:56 [ℹ]  creating EKS cluster "gpu-cluster" in "ap-northeast-1" region with un-managed nodes
+2022-12-31 22:28:56 [ℹ]  2 nodegroups (gpu-spot-ng-a, spot-ng) were included (based on the include/exclude rules)
+2022-12-31 22:28:56 [ℹ]  will create a CloudFormation stack for cluster itself and 2 nodegroup stack(s)
+2022-12-31 22:28:56 [ℹ]  will create a CloudFormation stack for cluster itself and 0 managed nodegroup stack(s)
+2022-12-31 22:28:56 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=ap-northeast-1 --cluster=gpu-cluster'
+2022-12-31 22:28:56 [ℹ]  Kubernetes API endpoint access will use default of {publicAccess=true, privateAccess=false} for cluster "gpu-cluster" in "ap-northeast-1"
+2022-12-31 22:28:56 [ℹ]  CloudWatch logging will not be enabled for cluster "gpu-cluster" in "ap-northeast-1"
+2022-12-31 22:28:56 [ℹ]  you can enable it with 'eksctl utils update-cluster-logging --enable-types={SPECIFY-YOUR-LOG-TYPES-HERE (e.g. all)} --region=ap-northeast-1 --cluster=gpu-cluster'
+2022-12-31 22:28:56 [ℹ]
+2 sequential tasks: { create cluster control plane "gpu-cluster",
+    2 sequential sub-tasks: {
+        wait for control plane to become ready,
+        2 parallel sub-tasks: {
+            create nodegroup "spot-ng",
+            create nodegroup "gpu-spot-ng-a",
+        },
+    }
+}
+2022-12-31 22:28:56 [ℹ]  building cluster stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:28:57 [ℹ]  deploying stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:29:27 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:29:57 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:30:57 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:31:57 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:32:58 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:33:58 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:34:58 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:35:58 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:36:59 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:37:59 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:38:59 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:39:59 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-cluster"
+2022-12-31 22:42:01 [ℹ]  building nodegroup stack "eksctl-gpu-cluster-nodegroup-spot-ng"
+2022-12-31 22:42:01 [ℹ]  building nodegroup stack "eksctl-gpu-cluster-nodegroup-gpu-spot-ng-a"
+2022-12-31 22:42:02 [ℹ]  deploying stack "eksctl-gpu-cluster-nodegroup-spot-ng"
+2022-12-31 22:42:02 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-nodegroup-spot-ng"
+2022-12-31 22:42:02 [ℹ]  deploying stack "eksctl-gpu-cluster-nodegroup-gpu-spot-ng-a"
+2022-12-31 22:42:02 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-nodegroup-gpu-spot-ng-a"
+2022-12-31 22:42:32 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-nodegroup-spot-ng"
+2022-12-31 22:42:32 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-nodegroup-gpu-spot-ng-a"
+2022-12-31 22:43:19 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-nodegroup-spot-ng"
+2022-12-31 22:43:23 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-nodegroup-gpu-spot-ng-a"
+2022-12-31 22:44:39 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-nodegroup-gpu-spot-ng-a"
+2022-12-31 22:45:06 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-nodegroup-spot-ng"
+2022-12-31 22:46:31 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-nodegroup-spot-ng"
+2022-12-31 22:46:36 [ℹ]  waiting for CloudFormation stack "eksctl-gpu-cluster-nodegroup-gpu-spot-ng-a"
+2022-12-31 22:46:36 [ℹ]  waiting for the control plane to become ready
+2022-12-31 22:46:37 [✔]  saved kubeconfig as "/Users/narayanan-sugumar/.kube/config"
+2022-12-31 22:46:37 [ℹ]  1 task: { install Nvidia device plugin }
+W1231 22:46:37.419413   54879 warnings.go:70] spec.template.metadata.annotations[scheduler.alpha.kubernetes.io/critical-pod]: non-functional in v1.16+; use the "priorityClassName" field instead
+2022-12-31 22:46:37 [ℹ]  created "kube-system:DaemonSet.apps/nvidia-device-plugin-daemonset"
+2022-12-31 22:46:37 [ℹ]  as you are using the EKS-Optimized Accelerated AMI with a GPU-enabled instance type, the Nvidia Kubernetes device plugin was automatically installed.
+	to skip installing it, use --install-nvidia-plugin=false.
+2022-12-31 22:46:37 [✔]  all EKS cluster resources for "gpu-cluster" have been created

@@ -1,0 +1,51 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: translation-service
+  labels:
+    app: translation-service
+spec:
+  ports:
+  - port: 9527
+    targetPort: service
+  selector:
+    app: translation-service
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: translation-service
+  labels:
+    app: translation-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: translation-service
+  template:
+    metadata:
+      labels:
+        app: translation-service
+    spec:
+      nodeSelector:
+        nvidia.com/gpu: "true"
+      tolerations:
+      - key: "nvidia.com/gpu"
+        operator: "Exists"
+        effect: "NoSchedule"
+      containers:
+      - name: translation-service
+        image: narayanannsuku1212/translator-service:latest
+        ports:
+        - name: service
+          containerPort: 9527
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 1
+            memory: 6Gi
+            nvidia.com/gpu: 1
+          requests:
+            cpu: 1
+            memory: 6Gi   ##  we needed 6GiB of memory to start with as the pod is loading models in memory before starting.
